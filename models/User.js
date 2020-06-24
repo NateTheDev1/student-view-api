@@ -25,7 +25,10 @@ const userSchema = new mongoose.Schema({
   },
   teamLeader: {
     type: String,
-    required: false,
+  },
+  leaderName: {
+    type: String,
+    required: true,
   },
 });
 
