@@ -21,4 +21,22 @@ router.post("/student", async (req, res) => {
   );
 });
 
+router.put("/student", async (req, res) => {
+  const leader = await Leader.findOne({ _id: req.body.leaderId });
+  const students = leader.students;
+
+  const newStudents = students.map((s) => {
+    if (s.studentId == req.body.studentId) {
+      const newStudent = {
+        name: req.body.name,
+        studentId: req.body.studentId,
+      };
+      return newStudent;
+    } else {
+      return s;
+    }
+  });
+  console.log(newStudents);
+});
+
 module.exports = router;
