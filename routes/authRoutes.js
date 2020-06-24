@@ -4,6 +4,22 @@ const Leader = require("../models/Leader");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+router.get("/leaders", async (req, res) => {
+  const leaders = await Leader.find();
+  if (!leaders) {
+    res.status(400).send("An error occured retrieving leaders");
+  }
+  res.status(200).send(leaders);
+});
+
+router.get("/students", async (req, res) => {
+  const students = await User.find();
+  if (!students) {
+    res.status(400).send("An error occured retrieving students");
+  }
+  res.status(200).send(students);
+});
+
 router.get("/leader/:id", async (req, res) => {
   const leader = await Leader.findOne({ _id: req.params.id });
   if (!leader) {
