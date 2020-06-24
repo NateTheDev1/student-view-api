@@ -10,14 +10,21 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+// ROUTES
+const authRoutes = require('./routes/authRoutes')
+app.use('/api/user', authRoutes)
+
+const uri = `mongodb+srv://Admin:adminpassword@student-view-b2hrb.mongodb.net/student-view?retryWrites=true&w=majority`
+
 // MONGOOSE SETUP HERE
-// mongoose.connect(
-//     process.env.DB_CONNECTION,
-//     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
-//     () => {
-//       console.log("Db Connected");
-//     }
-//   );
+mongoose.connect(
+    // process.env.DB_CONNECTION,
+    uri,
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+    () => {
+      console.log("Db Connected");
+    }
+  );
 
 
 app.get('/', (req, res) => {
