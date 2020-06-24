@@ -29,4 +29,23 @@ router.post("/:leaderId", async (req, res) => {
   }
 });
 
+router.put("/:leaderId", async (req, res) => {
+  Assignment.findOneAndUpdate(
+    { leaderId: req.params.leaderId },
+    {
+      $set: {
+        name: req.body.name,
+        grade: req.body.grade,
+        updatedAt: req.body.updatedAt,
+      },
+    },
+    (err, doc) => {
+      if (err) {
+        return res.status(400).send("Error updating assignment");
+      }
+      return res.json(doc);
+    }
+  );
+});
+
 module.exports = router;
