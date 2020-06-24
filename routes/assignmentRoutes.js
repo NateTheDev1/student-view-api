@@ -48,4 +48,14 @@ router.put("/:leaderId", async (req, res) => {
   );
 });
 
+router.delete("/:leaderId", async (req, res) => {
+  const assignment = await Assignment.findOneAndDelete({
+    _id: req.body.assignmentId,
+  });
+  if (!assignment) {
+    res.status(400).send("An error occured retrieving leaders");
+  }
+  return res.status(200).send(assignment);
+});
+
 module.exports = router;
