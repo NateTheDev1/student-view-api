@@ -11,23 +11,6 @@ const studentDataSchema = new mongoose.Schema({
   },
 });
 
-const assignmentSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  updatedAt: {
-    type: Date,
-    required: true,
-  },
-  studentId: {
-    type: String,
-  },
-  grade: {
-    type: String,
-  },
-});
-
 const leaderSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -52,7 +35,6 @@ const leaderSchema = new mongoose.Schema({
     required: true,
   },
   students: [studentDataSchema],
-  assignments: [assignmentSchema],
 });
 
 module.exports = mongoose.model("Leader", leaderSchema);

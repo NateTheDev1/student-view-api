@@ -28,6 +28,10 @@ mongoose.connect(
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/user", authRoutes);
 
+const assignmentRoutes = require("./routes/assignmentRoutes");
+const verifyToken = require("./routes/verifyToken");
+app.use("/api/assignments", verifyToken, assignmentRoutes);
+
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to the student view API");
 });
