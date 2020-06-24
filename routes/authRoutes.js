@@ -40,7 +40,7 @@ router.post("/register/:type", async (req, res) => {
       );
       res.header("Authorization", token).send({ ...savedLeader._doc, token });
     } catch (error) {
-      res.status(400).send(error);
+      return res.status(400).send(error);
     }
   } else if (req.params.type === "student") {
     const salt = await bcrypt.genSalt(10);
@@ -50,7 +50,7 @@ router.post("/register/:type", async (req, res) => {
     const leader = await Leader.findOne({ name: req.body.leaderName });
 
     if (!leader) {
-      res.status(400).send("Leader Not Found.");
+      return res.status(400).send("Leader Not Found.");
     }
 
     const user = new User({
@@ -76,4 +76,37 @@ router.post("/register/:type", async (req, res) => {
   }
 });
 
+router.post("/login/:type", async (req, res) => {
+  if (req.params.type === "leader") {
+    const leader = await Leader.findOne({ email: req.body.email });
+
+    if (!leader) {
+      return res.status(400).send("Email or password is incorrect.");
+    }
+
+    const valid = await bcrypt.compare(req.body.password, leader.password);
+    if (!valid) {
+      return res.status(400).send("Email or password is incorrect.");
+    }
+
+    const token = await jwt.sign({ _id: leader._id }, process.env.TOKEN_KEY);
+    res.header("Authorization", token).send({ ...leader._doc, token });
+  } else if (req.params.type === "student") {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return res.status(400).send("Email or password is incorrect.");
+    }
+
+    const valid = await bcrypt.compare(req.body.password, user.password);
+    if (!valid) {
+      return res.status(400).send("Email or password is incorrect.");
+    }
+
+    const token = await jwt.sign({ _id: user._id }, process.env.TOKEN_KEY);
+    res.header("Authorization", token).send({ ...user._doc, token });
+  } else {
+    res.status(400).send("Please declare a valid role.");
+  }
+});
 module.exports = router;
