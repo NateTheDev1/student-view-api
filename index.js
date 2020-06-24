@@ -32,6 +32,9 @@ const assignmentRoutes = require("./routes/assignmentRoutes");
 const verifyToken = require("./routes/verifyToken");
 app.use("/api/assignments", verifyToken, assignmentRoutes);
 
+const leaderRoutes = require("./routes/leaderRoutes");
+app.use("/api/leader", verifyToken, leaderRoutes);
+
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to the student view API");
 });
